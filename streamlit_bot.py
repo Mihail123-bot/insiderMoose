@@ -58,7 +58,7 @@ def run_telegram_bot():
         
         await application.initialize()
         await application.start()
-        await application.run_polling(drop_pending_updates=True)  # Added drop_pending_updates
+        await application.run_polling(drop_pending_updates=True)
 
     asyncio.run(start_bot())
 
