@@ -1,6 +1,6 @@
 import streamlit as st
 
-# Global Variables
+# Wallet address for payments
 WALLET_ADDRESS = "EdFcVXCxo2c5VBi1FY4UAhuW9VhyM2S9uu3BRY9Whcj4"
 
 # Main Function
@@ -31,8 +31,7 @@ def show_welcome_page():
     st.subheader("Do not miss out on this crazy community and join now!")
     st.write("Just follow the instructions to complete the payment.")
     if st.button("Start Payment"):
-        st.session_state.step = "plans"  # Update the step
-        st.experimental_rerun()  # Rerun to update the view
+        st.session_state.step = "plans"  # Update the step to 'plans'
 
 # Plans Page
 def show_plans_page():
@@ -61,32 +60,30 @@ def show_plans_page():
     - BONUS: Chatroom with whales and insiders ✅
     """)
     col1, col2, col3 = st.columns(3)
-    with col1:
-        if st.button("Select Basic (0.1 SOL)"):
-            st.session_state.selected_plan = "Basic (0.1 SOL)"
-            st.session_state.step = "wallet"  # Move to next step
-            st.experimental_rerun()  # Rerun to update the view
-    with col2:
-        if st.button("Select Basic (0.25 SOL)"):
-            st.session_state.selected_plan = "Basic (0.25 SOL)"
-            st.session_state.step = "wallet"  # Move to next step
-            st.experimental_rerun()  # Rerun to update the view
-    with col3:
-        if st.button("Select Pro (1 SOL)"):
-            st.session_state.selected_plan = "Pro (1 SOL)"
-            st.session_state.step = "wallet"  # Move to next step
-            st.experimental_rerun()  # Rerun to update the view
 
-# Wallet Input
+    # Buttons for selecting a plan
+    if col1.button("Select Basic (0.1 SOL)"):
+        st.session_state.selected_plan = "Basic (0.1 SOL)"
+        st.session_state.step = "wallet"
+
+    if col2.button("Select Basic (0.25 SOL)"):
+        st.session_state.selected_plan = "Basic (0.25 SOL)"
+        st.session_state.step = "wallet"
+
+    if col3.button("Select Pro (1 SOL)"):
+        st.session_state.selected_plan = "Pro (1 SOL)"
+        st.session_state.step = "wallet"
+
+# Wallet Input Page
 def ask_for_wallet():
     st.subheader(f"You selected the {st.session_state.selected_plan} plan.")
     wallet_address = st.text_input("Please enter your wallet address for payment:")
+
     if wallet_address:
         st.session_state.wallet_address = wallet_address
-        st.session_state.step = "payment"  # Move to payment instructions
-        st.experimental_rerun()  # Rerun to update the view
+        st.session_state.step = "payment"
 
-# Payment Instructions
+# Payment Instructions Page
 def show_payment_instructions():
     st.subheader(f"Thank you! You selected the {st.session_state.selected_plan} plan.")
     st.write(f"""
@@ -97,17 +94,15 @@ def show_payment_instructions():
 
     After completing the payment, the order will be processed.
     """)
+
     col1, col2 = st.columns(2)
-    with col1:
-        if st.button("Check Status"):
-            st.success("Payment verification is under construction.")
-    with col2:
-        if st.button("Cancel"):
-            # Reset all session state variables
-            st.session_state.step = "welcome"
-            st.session_state.selected_plan = None
-            st.session_state.wallet_address = None
-            st.experimental_rerun()  # Rerun to go back to the welcome page
+    if col1.button("Check Status"):
+        st.success("Payment verification is under construction.")
+    if col2.button("Cancel"):
+        # Reset all session state variables
+        st.session_state.step = "welcome"
+        st.session_state.selected_plan = None
+        st.session_state.wallet_address = None
 
 # Run App
 if __name__ == "__main__":
