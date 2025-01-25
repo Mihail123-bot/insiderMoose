@@ -80,7 +80,6 @@ class SubscriptionBot:
             await update.message.reply_text("Please select a plan first using /start")
             return
 
-        # Basic wallet address validation
         if not re.match(r'^[A-Za-z0-9]{32,44}$', wallet):
             await update.message.reply_text("Invalid wallet address. Please try again.")
             return
@@ -114,10 +113,9 @@ class SubscriptionBot:
             st.error(f"Bot error: {e}")
 
     def start_bot(self):
-        if not hasattr(self, 'bot_thread') or not self.bot_thread:
+        if not self.bot_thread or not self.bot_thread.is_alive():
             self.bot_thread = threading.Thread(target=self._run_bot, daemon=True)
             self.bot_thread.start()
-            st.success("Bot started!")
 
 def main():
     st.title("Telegram Subscription Bot")
@@ -125,10 +123,8 @@ def main():
     if 'bot' not in st.session_state:
         st.session_state.bot = SubscriptionBot(BOT_TOKEN)
     
-    st.write("Bot is ready. Open Telegram and start interaction.")
-    
-    if st.button("Start Bot"):
-        st.session_state.bot.start_bot()
+    st.session_state.bot.start_bot()
+    st.write("Bot is running. Open Telegram and start interaction.")
 
 if __name__ == "__main__":
     main()
