@@ -8,13 +8,13 @@ def main():
     # Page Title
     st.title("Welcome to Insider Moose Bot 🌟")
 
-    # Session State Initialization
+    # Initialize session state
     if "step" not in st.session_state:
         st.session_state.step = "welcome"
     if "selected_plan" not in st.session_state:
         st.session_state.selected_plan = None
     if "wallet_address" not in st.session_state:
-        st.session_state.wallet_address = None
+        st.session_state.wallet_address = ""
 
     # Steps Logic
     if st.session_state.step == "welcome":
@@ -31,7 +31,7 @@ def show_welcome_page():
     st.subheader("Do not miss out on this crazy community and join now!")
     st.write("Just follow the instructions to complete the payment.")
     if st.button("Start Payment"):
-        st.session_state.step = "plans"  # Update the step to 'plans'
+        st.session_state.step = "plans"  # Navigate to the plans page
 
 # Plans Page
 def show_plans_page():
@@ -61,7 +61,7 @@ def show_plans_page():
     """)
     col1, col2, col3 = st.columns(3)
 
-    # Buttons for selecting a plan
+    # Buttons to select a plan
     if col1.button("Select Basic (0.1 SOL)"):
         st.session_state.selected_plan = "Basic (0.1 SOL)"
         st.session_state.step = "wallet"
@@ -77,11 +77,14 @@ def show_plans_page():
 # Wallet Input Page
 def ask_for_wallet():
     st.subheader(f"You selected the {st.session_state.selected_plan} plan.")
-    wallet_address = st.text_input("Please enter your wallet address for payment:")
+    wallet_address = st.text_input("Please enter your wallet address for payment:", value=st.session_state.wallet_address)
 
-    if wallet_address:
-        st.session_state.wallet_address = wallet_address
-        st.session_state.step = "payment"
+    if st.button("Submit Wallet Address"):
+        if wallet_address.strip():
+            st.session_state.wallet_address = wallet_address.strip()
+            st.session_state.step = "payment"  # Proceed to payment page
+        else:
+            st.error("Please enter a valid wallet address.")
 
 # Payment Instructions Page
 def show_payment_instructions():
@@ -97,13 +100,13 @@ def show_payment_instructions():
 
     col1, col2 = st.columns(2)
     if col1.button("Check Status"):
-        st.success("Payment verification is under construction.")
+        st.info("Payment verification is under construction.")
     if col2.button("Cancel"):
         # Reset all session state variables
         st.session_state.step = "welcome"
         st.session_state.selected_plan = None
-        st.session_state.wallet_address = None
+        st.session_state.wallet_address = ""
 
-# Run App
+# Run the App
 if __name__ == "__main__":
     main()
