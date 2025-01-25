@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Wallet address for payments
-WALLET_ADDRESS = "EdFcVXCxo2c5VBi1FY4UAhuW9VhyM2S9uu3BRY9Whcj4"
+WALLET_ADDRESS = "GJYnbja54NLVqob7329eieZ5u7kTzgK85s36HYbNiBLd"
 
 # Main Function
 def main():
