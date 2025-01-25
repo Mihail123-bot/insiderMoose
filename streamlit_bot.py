@@ -100,7 +100,7 @@ def show_payment_instructions():
 
     col1, col2 = st.columns(2)
     if col1.button("Check Status"):
-        st.info("Payment verification is under construction.")
+        st.info("Verification takes up to 24 hours.")
     if col2.button("Cancel"):
         # Reset all session state variables
         st.session_state.step = "welcome"
