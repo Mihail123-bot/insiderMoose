@@ -1,17 +1,18 @@
 import streamlit as st
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, CallbackQueryHandler, ContextTypes
-import re
 import threading
+import re
 
 BOT_TOKEN = "7653877973:AAHfj_ks6hAvYzS4vXBk71WUV-qBSXr5vTo"
 
-class SubscriptionBot:
+class PersistentTelegramBot:
     def __init__(self, token):
         self.token = token
         self.app = None
-        self.user_states = {}
         self.bot_thread = None
+        self.is_running = False
+        self.user_states = {}
 
     async def start_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         keyboard = [
@@ -112,18 +113,22 @@ class SubscriptionBot:
         except Exception as e:
             st.error(f"Bot error: {e}")
 
-    def start_bot(self):
-        if not self.bot_thread or not self.bot_thread.is_alive():
+    def start(self):
+        if not self.is_running:
             self.bot_thread = threading.Thread(target=self._run_bot, daemon=True)
             self.bot_thread.start()
+            self.is_running = True
+            st.success("Bot started and will remain active!")
+
+# Initialize bot outside main to persist across reruns
+if 'bot' not in st.session_state:
+    st.session_state.bot = PersistentTelegramBot(BOT_TOKEN)
 
 def main():
     st.title("Telegram Subscription Bot")
     
-    if 'bot' not in st.session_state:
-        st.session_state.bot = SubscriptionBot(BOT_TOKEN)
-    
-    st.session_state.bot.start_bot()
+    # Automatically start bot on page load
+    st.session_state.bot.start()
     st.write("Bot is running. Open Telegram and start interaction.")
 
 if __name__ == "__main__":
