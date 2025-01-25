@@ -4,7 +4,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 
 # Replace with your actual bot token - DO NOT hardcode in production!
-BOT_TOKEN = st.secrets["7653877973:AAHfj_ks6hAvYzS4vXBk71WUV-qBSXr5vTo"]
+TELEGRAM_BOT_TOKEN = "7653877973:AAHfj_ks6hAvYzS4vXBk71WUV-qBSXr5vTo"
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Welcome! I'm your Streamlit-powered bot.")
