@@ -3,7 +3,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 import threading
 
-# Replace with your Telegram Bot Token
+# Replace with your actual Telegram Bot Token
 BOT_TOKEN = "7653877973:AAHfj_ks6hAvYzS4vXBk71WUV-qBSXr5vTo"
 
 # Persistent Telegram Bot Class
@@ -16,9 +16,7 @@ class PersistentTelegramBot:
 
     async def start_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Handle the /start command."""
-        await update.message.reply_text(
-            "Welcome to the Insider Moose Bot! I'm always online. Send me a message or use /start to interact!"
-        )
+        await update.message.reply_text("Welcome! I'm your always-on Streamlit bot.")
 
     async def handle_message(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Handle user messages."""
@@ -42,7 +40,7 @@ class PersistentTelegramBot:
             self.bot_thread = threading.Thread(target=self._run_bot, daemon=True)
             self.bot_thread.start()
             self.is_running = True
-            st.success("Bot started and is active!")
+            st.success("Bot started and will remain active!")
 
 # Initialize the bot and persist it across Streamlit sessions
 if 'bot' not in st.session_state:
