@@ -1,37 +1,25 @@
-from flask import Flask, request, redirect, url_for
-import hashlib
-import hmac
-import time
+import streamlit as st
+from telegram import Update
+from telegram.ext import Application, CommandHandler, ContextTypes
 
-app = Flask(__name__)
+TELEGRAM_TOKEN = "7653877973:AAHfj_ks6hAvYzS4vXBk71WUV-qBSXr5vTo"
 
-# Replace with your bot token and secret
-BOT_TOKEN = '7653877973:AAHfj_ks6hAvYzS4vXBk71WUV-qBSXr5vTo'
-WEB_APP_SECRET = 'YOUR_WEB_APP_SECRET'
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Do not miss out on this crazy community and join now!")
 
-@app.route('/')
-def home():
-    return '<a href="/login">Login with Telegram</a>'
+def run_bot():
+    application = Application.builder().token(TELEGRAM_TOKEN).build()
+    application.add_handler(CommandHandler("start", start))
 
-@app.route('/login')
-def login():
-    # Redirect to Telegram login
-    return redirect(f'https://telegram.me/InsiderMoose_bot')
+    # Start the bot
+    application.run_polling()
 
-@app.route('/webapp')
-def webapp():
-    # Get parameters from Telegram
-    auth_data = request.args
+def main():
+    st.title("Insider Moose Bot")
+    
+    if st.button("Start Bot"):
+        run_bot()
 
-    # Verify the user's identity
-    if verify_auth(auth_data):
-        return "Welcome to the Insider Moose Bot!"
-    else:
-        return "Authentication failed!"
+if __name__ == "__main__":
+    main()
 
-def verify_auth(auth_data):
-    # Implement verification logic here using the Telegram API
-    return True  # Placeholder for actual verification logic
-
-if __name__ == '__main__':
-    app.run(debug=True)
