@@ -8,6 +8,11 @@ def main():
     # Page Title
     st.title("Welcome to Insider Moose Bot 🌟")
 
+     # Display Discord link at the beginning
+    st.markdown("### Join our Discord Community!")
+    st.markdown("[Click here to join](https://discord.gg/SAyZsAG5)")
+
+    
     # Initialize session state
     if "step" not in st.session_state:
         st.session_state.step = "welcome"
