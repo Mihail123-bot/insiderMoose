@@ -31,8 +31,8 @@ def show_welcome_page():
     st.subheader("Do not miss out on this crazy community and join now!")
     st.write("Just follow the instructions to complete the payment.")
     if st.button("Start Payment"):
-        st.session_state.step = "plans"
-        st.experimental_rerun()
+        st.session_state.step = "plans"  # Update the step
+        st.experimental_rerun()  # Rerun to update the view
 
 # Plans Page
 def show_plans_page():
@@ -64,18 +64,18 @@ def show_plans_page():
     with col1:
         if st.button("Select Basic (0.1 SOL)"):
             st.session_state.selected_plan = "Basic (0.1 SOL)"
-            st.session_state.step = "wallet"
-            st.experimental_rerun()
+            st.session_state.step = "wallet"  # Move to next step
+            st.experimental_rerun()  # Rerun to update the view
     with col2:
         if st.button("Select Basic (0.25 SOL)"):
             st.session_state.selected_plan = "Basic (0.25 SOL)"
-            st.session_state.step = "wallet"
-            st.experimental_rerun()
+            st.session_state.step = "wallet"  # Move to next step
+            st.experimental_rerun()  # Rerun to update the view
     with col3:
         if st.button("Select Pro (1 SOL)"):
             st.session_state.selected_plan = "Pro (1 SOL)"
-            st.session_state.step = "wallet"
-            st.experimental_rerun()
+            st.session_state.step = "wallet"  # Move to next step
+            st.experimental_rerun()  # Rerun to update the view
 
 # Wallet Input
 def ask_for_wallet():
@@ -83,8 +83,8 @@ def ask_for_wallet():
     wallet_address = st.text_input("Please enter your wallet address for payment:")
     if wallet_address:
         st.session_state.wallet_address = wallet_address
-        st.session_state.step = "payment"
-        st.experimental_rerun()
+        st.session_state.step = "payment"  # Move to payment instructions
+        st.experimental_rerun()  # Rerun to update the view
 
 # Payment Instructions
 def show_payment_instructions():
@@ -103,10 +103,11 @@ def show_payment_instructions():
             st.success("Payment verification is under construction.")
     with col2:
         if st.button("Cancel"):
+            # Reset all session state variables
             st.session_state.step = "welcome"
             st.session_state.selected_plan = None
             st.session_state.wallet_address = None
-            st.experimental_rerun()
+            st.experimental_rerun()  # Rerun to go back to the welcome page
 
 # Run App
 if __name__ == "__main__":
