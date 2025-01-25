@@ -1,10 +1,10 @@
 import streamlit as st
-from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 import asyncio
 import threading
 
-TELEGRAM_TOKEN = "7653877973:AAEGkpqsEBF1SN60B5pC1wXj0HMa309fhJA"
+TELEGRAM_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"  # Replace with your actual token
 WALLET_ADDRESS = "EdFcVXCxo2c5VBi1FY4UAhuW9VhyM2S9uu3BRY9Whcj4"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -58,8 +58,8 @@ def run_telegram_bot():
         
         await application.initialize()
         await application.start()
-        await application.run_polling()
-        
+        await application.run_polling(drop_pending_updates=True)  # Added drop_pending_updates
+
     asyncio.run(start_bot())
 
 def main():
