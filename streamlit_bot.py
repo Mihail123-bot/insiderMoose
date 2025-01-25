@@ -129,7 +129,6 @@ def main():
     
     # Automatically start bot on page load
     st.session_state.bot.start()
-    st.write("Bot is running. Open Telegram and start interaction.")
 
 if __name__ == "__main__":
     main()
