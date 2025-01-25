@@ -1,3 +1,2 @@
-python-telegram-bot
-streamlit
-
+python-telegram-bot==20.7
+streamlit==1.30.0
