@@ -2,6 +2,7 @@ import streamlit as st
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, CallbackQueryHandler, ContextTypes
 import re
+import threading
 
 BOT_TOKEN = "7653877973:AAHfj_ks6hAvYzS4vXBk71WUV-qBSXr5vTo"
 
@@ -10,6 +11,7 @@ class SubscriptionBot:
         self.token = token
         self.app = None
         self.user_states = {}
+        self.bot_thread = None
 
     async def start_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         keyboard = [
@@ -99,14 +101,23 @@ class SubscriptionBot:
             reply_markup=reply_markup
         )
 
+    def _run_bot(self):
+        try:
+            self.app = ApplicationBuilder().token(self.token).build()
+            
+            self.app.add_handler(CommandHandler('start', self.start_command))
+            self.app.add_handler(CallbackQueryHandler(self.button_callback))
+            self.app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, self.handle_wallet_address))
+            
+            self.app.run_polling(drop_pending_updates=True)
+        except Exception as e:
+            st.error(f"Bot error: {e}")
+
     def start_bot(self):
-        self.app = ApplicationBuilder().token(self.token).build()
-        
-        self.app.add_handler(CommandHandler('start', self.start_command))
-        self.app.add_handler(CallbackQueryHandler(self.button_callback))
-        self.app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, self.handle_wallet_address))
-        
-        return self.app.run_polling(drop_pending_updates=True)
+        if not hasattr(self, 'bot_thread') or not self.bot_thread:
+            self.bot_thread = threading.Thread(target=self._run_bot, daemon=True)
+            self.bot_thread.start()
+            st.success("Bot started!")
 
 def main():
     st.title("Telegram Subscription Bot")
