@@ -10,7 +10,7 @@ def main():
 
      # Display Discord link at the beginning
     st.markdown("### Join our Discord Community!")
-    st.markdown("[Click here to join](https://discord.gg/SAyZsAG5)")
+    st.markdown("[Click here to join](https://discord.gg/63Fe5qnXGb)")
 
     
     # Initialize session state
